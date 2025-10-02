@@ -6,6 +6,7 @@ const { createClient } = require('@supabase/supabase-js');
 require('dotenv').config();
 
 const app = express();
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 const port = process.env.PORT || 5000;
 
 // --- Cấu hình CORS an toàn hơn ---
