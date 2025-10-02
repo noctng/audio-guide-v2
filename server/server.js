@@ -1,14 +1,41 @@
+// server/server.js
+
 const express = require('express');
-const cors = require('cors');
+const cors = require('cors'); // Đã có sẵn
 const { createClient } = require('@supabase/supabase-js');
 require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 5000;
 
-// Middleware
-app.use(cors());
-app.use(express.json());
+// --- Cấu hình CORS an toàn hơn ---
+const allowedOrigins = [
+  'http://localhost:3000', // Giữ lại nếu bạn đang phát triển frontend cục bộ
+  'https://audio-guide-v2-hmy60s97k-hang-anh-us-projects.vercel.app', // THÊM DOMAIN VERSEL CỦA FRONTEND VÀO ĐÂY
+  // Thêm các domain frontend khác nếu bạn có (ví dụ: domain tùy chỉnh của Vercel sau này)
+  // 'https://your-custom-frontend-domain.com'
+];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Nếu request không có origin (ví dụ: từ mobile apps, curl, hoặc cùng origin)
+    // Hoặc nếu origin nằm trong danh sách được phép
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  // 'credentials: true' là cần thiết nếu frontend của bạn gửi cookies hoặc Authorization headers
+  // (ví dụ: nếu bạn dùng JWT cho xác thực admin, frontend sẽ gửi Authorization header)
+  credentials: true,
+  optionsSuccessStatus: 200 // Một số trình duyệt cũ có thể cần điều này
+};
+
+app.use(cors(corsOptions)); // <-- Sử dụng middleware CORS với cấu hình an toàn
+
+// Middleware khác (đặt SAU cấu hình CORS)
+app.use(express.json()); // Để parse JSON body từ request
 
 // Supabase connection
 const supabaseUrl = process.env.SUPABASE_URL;
@@ -188,6 +215,7 @@ app.post('/api/exhibits', async (req, res) => {
                 .select();
             
             if (tracksError) {
+                // Nếu có lỗi khi insert track, rollback exhibit đã insert
                 await supabase.from('exhibits').delete().eq('id', id);
                 throw tracksError;
             }
@@ -199,7 +227,7 @@ app.post('/api/exhibits', async (req, res) => {
 
     } catch (err) {
         console.error(err.message);
-        if (err.code === '23505') {
+        if (err.code === '23505') { // Lỗi unique constraint (ID đã tồn tại)
             return res.status(400).json({ msg: `An exhibit with ID "${id}" already exists.` });
         }
         res.status(500).json({ msg: 'Server Error', error: err.message });
@@ -222,6 +250,7 @@ app.put('/api/exhibits/:id', async (req, res) => {
         if (exhibitError) throw exhibitError;
         if (!updatedExhibit) return res.status(404).json({ msg: 'Exhibit not found' });
         
+        // Xóa tất cả các audio_tracks cũ liên quan đến exhibit này
         await supabase.from('audio_tracks').delete().eq('exhibit_id', exhibitId);
 
         let finalTracks = [];
@@ -289,6 +318,9 @@ const startServer = () => {
     
     app.listen(port, () => {
         console.log(`🚀 Server running on http://localhost:${port}`);
+        // Log các URL để dễ dàng kiểm tra
+        console.log(`Backend URL: https://audio-guide-v2.onrender.com`);
+        console.log(`Frontend URL: ${allowedOrigins[1]}`); // Log domain của Vercel
         console.log('✅ Connected to Supabase');
     });
 };
