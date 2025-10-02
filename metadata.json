@@ -1,0 +1,7 @@
+{
+  "name": "Audio Guide",
+  "description": "An application for museum visitors to scan QR codes and listen to exhibit narrations in multiple languages. It also includes an admin panel for managing exhibits.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
