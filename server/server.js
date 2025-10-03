@@ -8,7 +8,9 @@ require('dotenv').config();
 const app = express();
 const API_BASE_URL = 'https://audio-guide-v2.onrender.com/';
 //const port = process.env.PORT || 5000;
-
+app.use(cors({
+  origin: "https://audio-guide-v2.vercel.app" // hoặc "*"
+}));
 // --- Cấu hình CORS an toàn hơn ---
 const allowedOrigins = [
   'http://localhost:3000', // Giữ lại nếu bạn đang phát triển frontend cục bộ
