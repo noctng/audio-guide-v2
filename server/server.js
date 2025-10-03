@@ -12,7 +12,7 @@ const port = process.env.PORT || 5000;
 // --- Cấu hình CORS an toàn hơn ---
 const allowedOrigins = [
   'http://localhost:3000', // Giữ lại nếu bạn đang phát triển frontend cục bộ
-  'https://audio-guide-v2-hmy60s97k-hang-anh-us-projects.vercel.app', // THÊM DOMAIN VERSEL CỦA FRONTEND VÀO ĐÂY
+  'https://audio-guide-v2.vercel.app/', // THÊM DOMAIN VERSEL CỦA FRONTEND VÀO ĐÂY
   // Thêm các domain frontend khác nếu bạn có (ví dụ: domain tùy chỉnh của Vercel sau này)
   // 'https://your-custom-frontend-domain.com'
 ];
