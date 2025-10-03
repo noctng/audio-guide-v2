@@ -3,7 +3,7 @@ import { Exhibit, ExhibitContextType } from '../types';
 
 const ExhibitContext = createContext<ExhibitContextType | undefined>(undefined);
 
-const API_URL = 'http://localhost:5000/api/exhibits'; // Base URL for the backend API
+const API_URL = 'https://audio-guide-v2.onrender.com/api/exhibits'; // Base URL for the backend API
 
 export const ExhibitProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [exhibits, setExhibits] = useState<Exhibit[]>([]);
