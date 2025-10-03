@@ -2,7 +2,7 @@ import React, { createContext, useState, useEffect, useContext, ReactNode } from
 import { GuestContextType, GuestSession } from '../types';
 
 const GUEST_SESSION_KEY = 'museumGuestSession';
-const API_URL = 'http://localhost:5000/api/guests';
+const API_URL = 'https://audio-guide-v2.onrender.com/api/guests';
 
 const GuestContext = createContext<GuestContextType | undefined>(undefined);
 
