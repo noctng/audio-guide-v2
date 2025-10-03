@@ -41,6 +41,7 @@ app.use(express.json()); // Để parse JSON body từ request
 // Supabase connection
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_KEY;
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Helper function to structure exhibit data from Supabase results
