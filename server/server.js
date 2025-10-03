@@ -6,8 +6,8 @@ const { createClient } = require('@supabase/supabase-js');
 require('dotenv').config();
 
 const app = express();
-const API_BASE_URL = import.meta.env.VITE_API_URL;
-const port = process.env.PORT || 5000;
+const API_BASE_URL = 'https://audio-guide-v2.onrender.com/';
+//const port = process.env.PORT || 5000;
 
 // --- Cấu hình CORS an toàn hơn ---
 const allowedOrigins = [
@@ -41,7 +41,7 @@ app.use(express.json()); // Để parse JSON body từ request
 // Supabase connection
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_KEY;
-const API_BASE_URL = import.meta.env.VITE_API_URL;
+const API_BASE_URL = 'https://audio-guide-v2.onrender.com/';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Helper function to structure exhibit data from Supabase results
